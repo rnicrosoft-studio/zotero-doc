@@ -86,11 +86,11 @@ jobs:
           # Set a generated GITHUB_TOKEN for pushing to the remote branch.
           github_token: ${{ secrets.GITHUB_TOKEN }} # optional
           # Set an input directory for deployment.
-          publish_dir: ./ # optional, default is public
+          publish_dir: ./gh-pages/ # optional, default is public
           # If existing files in the publish branch should be not removed before deploying
 #           keep_files: # optional, default is false
           # Set a custom commit message with a triggered commit hash
-          commit_message: ${{ github.event.inputs.version }} # optional
+          commit_message: "Zotero version tag: ${{ github.event.inputs.version }} - build with" # optional
           
         
         
