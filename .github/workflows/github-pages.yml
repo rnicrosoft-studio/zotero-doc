@@ -39,7 +39,7 @@ jobs:
           # Relative path under $GITHUB_WORKSPACE to place the repository
           path: zotero # optional
           # Whether to checkout submodules: `true` to checkout submodules or `recursive` to recursively checkout submodules.
-#           submodules: # optional
+          submodules: recursive # optional
           
       # Checks-out gh-pages branch
       - name: Checkout gh-pages
