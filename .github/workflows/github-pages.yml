@@ -41,7 +41,7 @@ jobs:
           # Whether to checkout submodules: `true` to checkout submodules or `recursive` to recursively checkout submodules.
 #           submodules: # optional
           
-      # Checks-out Zotero repository
+      # Checks-out gh-pages branch
       - name: Checkout gh-pages
         uses: actions/checkout@v3
         with:
@@ -54,7 +54,7 @@ jobs:
           # Whether to checkout submodules: `true` to checkout submodules or `recursive` to recursively checkout submodules.
 #           submodules: # optional
 
-      - name: Work direcctory Preparation
+      - name: Work directory Preparation
         run: |
           echo "Zotero version tag: ${{ github.event.inputs.version }}"
           rm -rf ./gh-pages/${{ github.event.inputs.version }}
@@ -68,7 +68,7 @@ jobs:
           # Output folder for the generated documentation
           output_dir: ./gh-pages/${{ github.event.inputs.version }} # optional
           # Recurse into subdirectories when scanning for source files
-#           recurse: # optional
+          recurse: true # optional
           # The path to a JSDoc configuration file
 #           config_file: conf.json # optional
           # The JSDoc template to install
