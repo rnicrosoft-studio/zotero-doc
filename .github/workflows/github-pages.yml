@@ -1,0 +1,95 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Build and Deploy to Github Pages
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push events but only for the "main" branch
+#   push:
+#     branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'The updated Zotero version tag.'
+        required: true
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build-deploy:
+    name: Build and Deploy
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout environment
+        uses: actions/checkout@v3
+      
+      # Checks-out Zotero repository
+      - name: Checkout Zotero
+        uses: actions/checkout@v3
+        with:
+          # Repository name with owner. For example, actions/checkout
+          repository: zotero/zotero # optional, default is ${{ github.repository }}
+          # The branch, tag or SHA to checkout. When checking out the repository that triggered a workflow, this defaults to the reference or SHA for that event.  Otherwise, uses the default branch.
+          ref: ${{ github.event.inputs.version }} # optional
+          # Relative path under $GITHUB_WORKSPACE to place the repository
+          path: zotero # optional
+          # Whether to checkout submodules: `true` to checkout submodules or `recursive` to recursively checkout submodules.
+#           submodules: # optional
+          
+      # Checks-out Zotero repository
+      - name: Checkout gh-pages
+        uses: actions/checkout@v3
+        with:
+          # Repository name with owner. For example, actions/checkout
+#           repository: # optional, default is ${{ github.repository }}
+          # The branch, tag or SHA to checkout. When checking out the repository that triggered a workflow, this defaults to the reference or SHA for that event.  Otherwise, uses the default branch.
+#           ref: # optional
+          # Relative path under $GITHUB_WORKSPACE to place the repository
+          path: gh-pages # optional
+          # Whether to checkout submodules: `true` to checkout submodules or `recursive` to recursively checkout submodules.
+#           submodules: # optional
+
+      - name: Work direcctory Preparation
+        run: |
+          rm -rf ./gh-pages/${{ github.event.inputs.version }}
+          mkdir ./gh-pages/${{ github.event.inputs.version }}
+
+      - name: JSDoc build
+        uses: andstor/jsdoc-action@v1.2
+        with:
+          # Source directory to build documentation from
+          source_dir: ./zotero # optional
+          # Output folder for the generated documentation
+          output_dir: ./gh-pages/${{ github.event.inputs.version }} # optional
+          # Recurse into subdirectories when scanning for source files
+#           recurse: # optional
+          # The path to a JSDoc configuration file
+#           config_file: conf.json # optional
+          # The JSDoc template to install
+#           template: minami # optional
+          # This input variable is deprecated in favour of "template"
+#           template_name: # optional
+          # The relative location of the template files within the template package
+#           template_dir: # optional
+          # The path to a Markdown file to be used as a the front page
+#           front_page: README.md # optional
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3.7
+        with:
+          # Set a generated GITHUB_TOKEN for pushing to the remote branch.
+          github_token: ${{ secrets.GITHUB_TOKEN }} # optional
+          # Set an input directory for deployment.
+          publish_dir: ./ # optional, default is public
+          # If existing files in the publish branch should be not removed before deploying
+#           keep_files: # optional, default is false
+          # Set a custom commit message with a triggered commit hash
+          commit_message: ${{ github.event.inputs.version }} # optional
+          
+        
+        
