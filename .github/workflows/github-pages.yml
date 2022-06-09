@@ -60,7 +60,7 @@ jobs:
           mkdir ./gh-pages/${{ github.event.inputs.version }}
 
       - name: JSDoc build
-        uses: andstor/jsdoc-action@v1.2
+        uses: andstor/jsdoc-action@v1
         with:
           # Source directory to build documentation from
           source_dir: ./zotero # optional
@@ -80,7 +80,7 @@ jobs:
 #           front_page: README.md # optional
 
       - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3.7
+        uses: peaceiris/actions-gh-pages@v3
         with:
           # Set a generated GITHUB_TOKEN for pushing to the remote branch.
           github_token: ${{ secrets.GITHUB_TOKEN }} # optional
