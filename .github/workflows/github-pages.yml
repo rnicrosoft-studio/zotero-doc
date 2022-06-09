@@ -56,6 +56,7 @@ jobs:
 
       - name: Work direcctory Preparation
         run: |
+          echo "Zotero version tag: ${{ github.event.inputs.version }}"
           rm -rf ./gh-pages/${{ github.event.inputs.version }}
           mkdir ./gh-pages/${{ github.event.inputs.version }}
 
